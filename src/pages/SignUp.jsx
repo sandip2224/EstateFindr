@@ -1,5 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import {
+	getAuth,
+	createUserWithEmailAndPassword,
+	updateProfile,
+} from 'firebase/auth';
+import { db } from '../firebase.config';
 import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRightIcon.svg';
 import visibilityIcon from '../assets/svg/visibilityIcon.svg';
 
@@ -10,7 +16,7 @@ function SignUp() {
 		password: '',
 	});
 
-	const { name, email, password } = showPassword;
+	const { name, email, password } = formData;
 	const navigate = useNavigate();
 
 	const handleChange = (e) => {
@@ -20,6 +26,29 @@ function SignUp() {
 		}));
 	};
 
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		try {
+			const auth = getAuth();
+			const userCredential = await createUserWithEmailAndPassword(
+				auth,
+				email,
+				password
+			);
+
+			const user = userCredential.user;
+			updateProfile(auth.currentUser, {
+				displayName: name,
+			});
+
+			navigate('/');
+		} catch (err) {
+			const errorCode = err.code;
+			const errorMessage = err.message;
+			console.log(errorCode, errorMessage);
+		}
+	};
+
 	return (
 		<>
 			<div className='pageContainer'>
@@ -27,7 +56,7 @@ function SignUp() {
 					<p className='pageHeader'>Welcome Back!</p>
 				</header>
 				<main>
-					<form>
+					<form onSubmit={handleSubmit}>
 						<input
 							type='text'
 							className='nameInput'
