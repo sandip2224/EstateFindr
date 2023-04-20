@@ -10,7 +10,7 @@ function SignIn() {
 		password: '',
 	});
 
-	const { email, password } = showPassword;
+	const { email, password } = formData;
 	const navigate = useNavigate();
 
 	const handleChange = (e) => {
