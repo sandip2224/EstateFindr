@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import {
 	getAuth,
 	createUserWithEmailAndPassword,
@@ -54,6 +55,7 @@ function SignUp() {
 			const errorCode = err.code;
 			const errorMessage = err.message;
 			console.log(errorCode, errorMessage);
+			toast.error('Something went wrong with registration!');
 		}
 	};
 
