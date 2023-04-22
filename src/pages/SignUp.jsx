@@ -91,6 +91,7 @@ function SignUp() {
 								id='password'
 								value={password}
 								onChange={handleChange}
+								autoComplete='off'
 							/>
 							<img
 								src={visibilityIcon}
