@@ -88,7 +88,6 @@ function Profile() {
 							className='profileEmail'
 							disabled={true}
 							value={email}
-							onChange={handleChange}
 						/>
 					</form>
 				</div>
