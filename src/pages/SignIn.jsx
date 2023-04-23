@@ -6,6 +6,7 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRightIcon.svg';
 import visibilityIcon from '../assets/svg/visibilityIcon.svg';
+import Spinner from '../components/Spinner';
 
 function SignIn() {
 	const [showPassword, setShowPassword] = useState(false);
@@ -13,6 +14,7 @@ function SignIn() {
 		email: '',
 		password: '',
 	});
+	const [loading, setLoading] = useState(false);
 
 	const { email, password } = formData;
 	const navigate = useNavigate();
@@ -26,6 +28,7 @@ function SignIn() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setLoading(true);
 
 		try {
 			const auth = getAuth();
@@ -35,16 +38,20 @@ function SignIn() {
 				password
 			);
 
+			setLoading(false);
 			if (userCredential.user) {
 				navigate('/');
 			}
 		} catch (err) {
+			setLoading(false);
 			toast.error('Bad User Credentials!');
 			console.log(err);
 		}
 	};
 
-	return (
+	return loading ? (
+		<Spinner />
+	) : (
 		<>
 			<div className='pageContainer'>
 				<header>

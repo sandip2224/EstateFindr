@@ -11,9 +11,11 @@ import { db } from '../firebase.config';
 
 import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRightIcon.svg';
 import visibilityIcon from '../assets/svg/visibilityIcon.svg';
+import Spinner from '../components/Spinner';
 
 function SignUp() {
 	const [showPassword, setShowPassword] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [formData, setFormData] = useState({
 		email: '',
 		password: '',
@@ -31,6 +33,7 @@ function SignUp() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setLoading(true);
 		try {
 			const auth = getAuth();
 			const userCredential = await createUserWithEmailAndPassword(
@@ -49,17 +52,21 @@ function SignUp() {
 			formDataCopy.timestamp = serverTimestamp();
 
 			await setDoc(doc(db, 'users', user.uid), formDataCopy);
+			setLoading(false);
 
 			navigate('/');
 		} catch (err) {
 			const errorCode = err.code;
 			const errorMessage = err.message;
 			console.log(errorCode, errorMessage);
+			setLoading(false);
 			toast.error('Something went wrong with registration!');
 		}
 	};
 
-	return (
+	return loading ? (
+		<Spinner />
+	) : (
 		<>
 			<div className='pageContainer'>
 				<header>
