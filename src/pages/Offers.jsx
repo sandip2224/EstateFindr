@@ -18,7 +18,7 @@ function Offers() {
 	const [listings, setListings] = useState(null);
 	const [loading, setLoading] = useState(false);
 
-	const params = useParams();
+	// const params = useParams();
 
 	useEffect(() => {
 		setLoading(true);
