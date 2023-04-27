@@ -4,6 +4,8 @@ import { getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { db } from '../firebase.config';
 import Spinner from '../components/Spinner';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+
 import shareIcon from '../assets/svg/shareIcon.svg';
 
 function Listing() {
@@ -21,7 +23,6 @@ function Listing() {
 			const docSnap = await getDoc(docRef);
 
 			if (docSnap.exists()) {
-				console.log(docSnap.data());
 				setListing(docSnap.data());
 				setLoading(false);
 			} else {
@@ -30,7 +31,7 @@ function Listing() {
 		};
 
 		fetchListing();
-	}, [params.listingId]);
+	}, [navigate, params.listingId]);
 
 	if (loading) {
 		return <Spinner />;
@@ -94,7 +95,28 @@ function Listing() {
 					<li>{listing.furnished ? 'Furnished' : ''}</li>
 
 					<p className='listingLocationTitle'>Location</p>
-					{/* MAP */}
+
+					<div className='leafletContainer'>
+						<MapContainer
+							style={{
+								height: '100%',
+								width: '100%',
+							}}
+							center={[listing.geolocation.lat, listing.geolocation.lng]}
+							zoom={13}
+							scrollWheelZoom={false}
+						>
+							<TileLayer
+								attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+								url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+							/>
+							<Marker
+								position={[listing.geolocation.lat, listing.geolocation.lng]}
+							>
+								<Popup>{listing.location}</Popup>
+							</Marker>
+						</MapContainer>
+					</div>
 
 					{auth.currentUser?.uid !== listing.userRef && (
 						<Link
