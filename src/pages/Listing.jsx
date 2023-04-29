@@ -15,7 +15,6 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 function Listing() {
 	const [listing, setListing] = useState(null);
 	const [loading, setLoading] = useState(true);
-	const [status, setStatus] = useState(false);
 	const [shareLinkCopied, setShareLinkCopied] = useState(false);
 
 	const navigate = useNavigate();
@@ -29,10 +28,8 @@ function Listing() {
 
 			if (docSnap.exists()) {
 				setListing(docSnap.data());
-				setStatus(true);
 				setLoading(false);
 			} else {
-				setStatus(false);
 				setLoading(false);
 			}
 		};
@@ -43,9 +40,8 @@ function Listing() {
 	if (loading) {
 		return <Spinner />;
 	} else {
-		if (!status) return <p className='listingDetails'>Listing not found!</p>;
-		else {
-			return (
+		return (
+			listing && (
 				<main>
 					<Swiper slidesPerView={1} pagination={{ clickable: true }}>
 						{listing.imgUrls.map((url, index) => (
@@ -153,8 +149,8 @@ function Listing() {
 						</ul>
 					</div>
 				</main>
-			);
-		}
+			)
+		);
 	}
 }
 
