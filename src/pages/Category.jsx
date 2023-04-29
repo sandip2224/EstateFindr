@@ -58,6 +58,7 @@ function Category() {
 		};
 
 		fetchListings();
+		// eslint-disable-next-line
 	}, []);
 
 	// Pagination / load more
