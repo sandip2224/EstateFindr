@@ -11,6 +11,7 @@ function Contact() {
 	const [message, setMessage] = useState('');
 	const [landlord, setLandlord] = useState(null);
 	const [loading, setLoading] = useState(true);
+	// eslint-disable-next-line
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const params = useParams();
