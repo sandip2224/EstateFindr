@@ -86,7 +86,7 @@ function Listing() {
 										.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
 						</p>
 
-						<p className='listingLocation'>{listing.location}</p>
+						<p className='listingLocation'>{listing.address}</p>
 						<p className='listingType'>
 							For {listing.type === 'rent' ? 'Rent' : 'Sale'}
 						</p>
@@ -133,7 +133,7 @@ function Listing() {
 											listing.geolocation.lng,
 										]}
 									>
-										<Popup>{listing.location}</Popup>
+										<Popup>{listing.address}</Popup>
 									</Marker>
 								</MapContainer>
 							</div>
