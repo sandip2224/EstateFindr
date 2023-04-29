@@ -57,10 +57,11 @@ function LinearProgressWithLabel(props) {
 }
 
 function EditListing() {
+	// eslint-disable-next-line
 	const [geolocationEnabled, setGeolocationEnabled] = useState(true);
 	const [loading, setLoading] = useState(true);
 	const [listing, setListing] = useState(null);
-	const [imageUrls, setImageUrls] = useState([]);
+	const [updatedImageUrls, setUpdatedImageUrls] = useState([]);
 	const [uploadProgress, setUploadProgress] = useState([]);
 
 	const [formData, setFormData] = useState({
@@ -77,6 +78,7 @@ function EditListing() {
 		images: {},
 		latitude: 0,
 		longitude: 0,
+		imgUrls: null,
 	});
 
 	const auth = getAuth();
@@ -98,6 +100,7 @@ function EditListing() {
 		images,
 		latitude,
 		longitude,
+		imgUrls,
 	} = formData;
 
 	const handleSubmit = async (e) => {
@@ -110,7 +113,7 @@ function EditListing() {
 				'Discounted price needs to be less than regular price!'
 			);
 		}
-		if (imageUrls.length > 6) {
+		if (updatedImageUrls.length > 6) {
 			setLoading(false);
 			return toast.error('Maximum 6 images allowed!');
 		}
@@ -145,7 +148,7 @@ function EditListing() {
 
 		const formDataCopy = {
 			...formData,
-			imgUrls: imageUrls,
+			imgUrls: updatedImageUrls.length > 0 ? updatedImageUrls : imgUrls,
 			geolocation,
 			timestamp: serverTimestamp(),
 		};
@@ -175,7 +178,6 @@ function EditListing() {
 
 		// Files
 		if (e.target.files) {
-			console.log('Setting files to images!');
 			setFormData((prevState) => ({
 				...prevState,
 				images: e.target.files,
@@ -214,6 +216,17 @@ function EditListing() {
 						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 					console.log('Upload is ' + progress + '% done');
 
+					switch (snapshot.state) {
+						case 'paused':
+							console.log('Upload is paused');
+							break;
+						case 'running':
+							console.log('Upload is running');
+							break;
+						default:
+							break;
+					}
+
 					// Update the progress bar here
 					setUploadProgress((prevProgress) => {
 						const updatedProgress = [...prevProgress];
@@ -227,13 +240,11 @@ function EditListing() {
 				},
 				() => {
 					getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-						setImageUrls((prevState) => [...prevState, downloadURL]);
+						setUpdatedImageUrls((prevState) => [...prevState, downloadURL]);
 					});
 				}
 			);
 		});
-
-		console.log(imageUrls.length, ' | ', Object.values(images).length);
 	};
 
 	const storeImage = (image) => {
@@ -246,13 +257,13 @@ function EditListing() {
 
 	useEffect(() => {
 		if (
-			imageUrls.length === Object.values(images).length &&
-			imageUrls.length > 0
+			updatedImageUrls.length === Object.values(images).length &&
+			updatedImageUrls.length > 0
 		) {
 			toast.success('Images uploaded successfully!');
 		}
 		// eslint-disable-next-line
-	}, [imageUrls]);
+	}, [updatedImageUrls]);
 
 	// Redirect if listing is not current User's
 	useEffect(() => {
@@ -270,7 +281,9 @@ function EditListing() {
 
 			if (docSnap.exists()) {
 				setListing(docSnap.data());
-				setFormData({ ...docSnap.data(), address: docSnap.data().address });
+				setFormData({
+					...docSnap.data(),
+				});
 				setLoading(false);
 			} else {
 				navigate('/');
