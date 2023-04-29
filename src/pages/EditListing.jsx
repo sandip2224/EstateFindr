@@ -36,19 +36,6 @@ function LinearProgressWithLabel(props) {
 		// eslint-disable-next-line
 	}, [props.value]);
 
-	// return (
-	// 	<Box sx={{ display: 'flex', alignItems: 'center' }}>
-	// 		<Box sx={{ width: '100%', mr: 1 }}>
-	// 			<LinearProgress variant='determinate' {...props} />
-	// 		</Box>
-	// 		<Box sx={{ minWidth: 35 }}>
-	// 			<Typography variant='body2' color='text.secondary'>{`${Math.round(
-	// 				props.value
-	// 			)}%`}</Typography>
-	// 		</Box>
-	// 	</Box>
-	// );
-
 	return (
 		<>
 			{visible && (
@@ -283,7 +270,7 @@ function EditListing() {
 
 			if (docSnap.exists()) {
 				setListing(docSnap.data());
-				setFormData({ ...docSnap.data(), address: docSnap.data().location });
+				setFormData({ ...docSnap.data(), address: docSnap.data().address });
 				setLoading(false);
 			} else {
 				navigate('/');
