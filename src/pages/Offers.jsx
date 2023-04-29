@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import {
 	collection,
 	getDocs,
@@ -126,7 +125,6 @@ function Offers() {
 							Load More
 						</p>
 					)}
-
 				</>
 			) : (
 				<p>There are no current offers!</p>
