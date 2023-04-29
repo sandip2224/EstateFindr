@@ -184,7 +184,7 @@ function CreateListing() {
 			setFormData((prevState) => ({
 				...prevState,
 				[e.target.id]:
-					val === null || val == ''
+					val === null || val === ''
 						? val
 						: isNaN(val)
 						? boolean ?? val
@@ -202,6 +202,7 @@ function CreateListing() {
 				navigate('/sign-in');
 			}
 		});
+		// eslint-disable-next-line
 	}, []);
 
 	if (loading) return <Spinner />;
