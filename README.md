@@ -1,4 +1,4 @@
-# HomeHunt 🔍
+# EstateFindr 🔍
 
 React-based web app for advertising and contacting house/flat listings, enabling seamless sale/rent transactions. 💪
 
