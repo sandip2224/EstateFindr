@@ -20,13 +20,13 @@ To run this project, you will need to add the following environment variables to
 Clone the project
 
 ```bash
-  git clone https://github.com/sandip2224/HouseBiz.git
+  git clone https://github.com/sandip2224/EstateFindr.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd HouseBiz
+  cd EstateFindr
 ```
 
 Install dependencies
